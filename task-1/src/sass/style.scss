@@ -1,0 +1,82 @@
+:root{
+    --width:300px;                                          // установка единой ширины для всех с возможностью адаптировать
+
+    // переменные для триугольника в чешском флаге (пропорция и адаптив)
+    --traingle_w:calc(var(--width)/2);                      // установка ширины триугольника
+    --traingle_h:calc((var(--width) * (2/3))/2);            // установка высоты триугольника
+
+    // переменные для круга в японском флаге  (пропорция и адаптив)
+    --cycle_diameter: calc(calc(var(--width)/(25/10))/2) ;  // получение диаметра( длины блока) круга
+    --cycle_diameter_shade: calc(
+            calc(calc(var(--width)/(25/10))/2)*1.015        
+        ) ;                                                 // для сглаживания круга внутри
+
+    // переменные для внутрених квадратов и прямоугольников в исландском флаге
+    --ice_h: calc(var(--width)/(3.57));                     // высота для квадратов и прямоугольников
+    --ice_w: calc(var(--ice_h)*2);                          // ширина для прямоугольников только
+    --ice_linew: calc(var(--width)/12.585);                 // ширина красных прямоугольников
+    --ice_mar: calc( 
+        calc(var(--ice_linew)/2) + var(--ice_h) 
+        );                                                  // отсупы для красных прямоугольников
+}
+
+
+
+.container{                           // обёртка для флагов
+    max-width: var(--width);          // ширина по котрой флаги будут устанавливатся 
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5vh;
+}
+
+.prop_2to3, .prop_18to25{
+    width: 100%;
+    height: calc(var(--width) * (2/3)) ;    // получение высоты по отношению к ширине
+}
+
+.prop_18to25{
+    width: 100%;
+    height: calc(var(--width) * (18/25)) ;  // получение высоты по отношению к ширине
+}
+
+.ukarine{
+    background: linear-gradient(blue 50%,yellow 50%);
+}
+
+
+.japan{
+    background: radial-gradient(circle, red var(--cycle_diameter), rgb(230, 230, 230) var(--cycle_diameter_shade));
+}
+
+.czech{
+    position: relative;
+    background: linear-gradient(rgb(230, 230, 230) 50%,red 50%);
+    &::after{        // для себя выбрал псевдо-елемент, как вариант решения
+        content:'';
+        position: absolute;
+        top: 0;
+        // рисую триугольник
+        border-top: var(--traingle_h) solid transparent;
+        border-bottom: var(--traingle_h) solid transparent;
+        border-left: var(--traingle_w) solid blue;
+    
+    }
+}
+
+.iceland{
+    
+    // выставляю квадраты и прямоугольнки для флага на белом бэкграунде
+    // градиент(от цвет, в цвет) х у / ширина высота
+    background: linear-gradient(blue,blue) 0 0 / var(--ice_h) var(--ice_h),
+    linear-gradient(blue,blue) 100% 0 / var(--ice_w) var(--ice_h),
+    linear-gradient(blue,blue) 0 100% / var(--ice_h) var(--ice_h),
+    linear-gradient(blue,blue) 100% 100% / var(--ice_w) var(--ice_h),
+    linear-gradient(red,red) 0 var(--ice_mar) / 100% var(--ice_linew),
+    linear-gradient(red,red) var(--ice_mar) 0 / var(--ice_linew) 100%;
+
+    background-color:rgb(230, 230, 230);
+    background-repeat:no-repeat; 
+}
